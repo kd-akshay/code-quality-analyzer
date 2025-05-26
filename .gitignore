@@ -1,0 +1,23 @@
+# Node.js / npm
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json # See note below if you prefer committing this
+yarn.lock         # See note below if you prefer committing this
+pnpm-lock.yaml    # See note below if you prefer committing this
+
+# Build output
+dist/
+build/
+out/
+lib/ # If 'lib' is a compiled output directory, not source
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+!.env.example # Often good to commit an example .env file
+
+# Log files
+*.log
+logs/
