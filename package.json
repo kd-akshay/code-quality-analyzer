@@ -1,10 +1,9 @@
-
 {
   "name": "code-quality-analyzer",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Analyzes code quality of React, Vue, and Angular projects using linters and an LLM.",
   "main": "lib/index.js",
-  "type":"module",
+  "type": "module",
   "bin": {
     "analyze-code": "./bin/analyze-code.js"
   },
@@ -23,12 +22,12 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "ollama": "^0.5.0",  
-    "glob": "^10.3.10", 
-    "chalk": "^4.1.2" 
+    "chalk": "^4.1.2",
+    "eslint": "^9.27.0",
+    "glob": "^10.3.10",
+    "ollama": "^0.5.0"
   },
   "engines": {
     "node": ">=18.0.0"
   }
 }
-

@@ -2,10 +2,10 @@
 node_modules/
 npm-debug.log*
 yarn-error.log*
-package-lock.json # See note below if you prefer committing this
-yarn.lock         # See note below if you prefer committing this
-pnpm-lock.yaml    # See note below if you prefer committing this
-
+package-lock.json 
+yarn.lock         
+pnpm-lock.yaml    
+./package-lock.json
 # Build output
 dist/
 build/
@@ -16,7 +16,7 @@ lib/ # If 'lib' is a compiled output directory, not source
 .env
 .env.local
 .env.*.local
-!.env.example # Often good to commit an example .env file
+
 
 # Log files
 *.log
