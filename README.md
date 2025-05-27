@@ -1,6 +1,6 @@
 # Code Quality LLM Analyzer
 
-**Version:** 0.1.0 (Experimental)
+**Version:** 0.1.2 (Experimental)
 
 Analyze the code quality of your React, Vue, and Angular projects using the power of Large Language Models (LLMs) for insightful suggestions, alongside planned integration for traditional linters.
 
@@ -51,18 +51,24 @@ You can install the package locally as a development dependency in your project 
 npm install --save-dev code-quality-llm-analyzer
 # or
 yarn add --dev code-quality-llm-analyzer
-
+```
 
 Alternatively, for global use (less common for project-specific tools):
 
+```bash
 npm install -g code-quality-llm-analyzer
+```
+
+## Usage
+
 
 Once installed, you can run the analyzer from the root of your project directory.
 
 Using npx (if installed locally *recommended):
 
+```bash
 npx analyze-code [path_to_project]
-
+```
 
 If [path_to_project] is omitted, it defaults to the current directory (.).
 
@@ -70,19 +76,22 @@ Examples:
 
 Analyze the current project:
 
+```bash
 npx analyze-code .
-
+```
 
 Analyze a specific sub-directory:
 
+```bash
 npx analyze-code ./src/app
+```
 
 Specifying the LLM Model:
 
 You can specify which Ollama model to use via the OLLAMA_MODEL environment variable. If not set, it defaults to codellama:13b-instruct.
 
 OLLAMA_MODEL=llama3:8b npx analyze-code .
-# or for a larger model (will be slower, requires more resources)
+or for a larger model (will be slower, requires more resources)
 OLLAMA_MODEL=codellama:34b-instruct npx analyze-code .
 
 
@@ -90,27 +99,31 @@ Adding to npm scripts (Recommended for local project usage):
 
 Edit your project's package.json:
 
+```bash
 {
   "scripts": {
     "analyze:quality": "analyze-code .",
     "analyze:quality:deep": "OLLAMA_MODEL=codellama:34b-instruct analyze-code ./src"
   }
 }
-
+```
 
 Then run:
 
+```bash
 npm run analyze:quality
 # or
 npm run analyze:quality:deep
-
+```
 
 If installed globally:
 
+```bash
 analyze-code [path_to_project]
 OLLAMA_MODEL=llama3:8b analyze-code .
+```
 
-How it Works
+## How it Works
 
 File Discovery: The tool scans your project directory for relevant source files based on common extensions for React, Vue, and Angular.
 
@@ -118,11 +131,11 @@ LLM Prompting: For each identified file, its content is sent to the configured O
 
 Report Generation: The LLM's responses are collected and presented in a consolidated report in your console.
 
-Contributing
+## Contributing
 
 This project is in its early stages, and contributions are welcome! If you have ideas, bug reports, or want to contribute code, please feel free to open an issue or a pull request on the GitHub repository. (Replace with your actual GitHub link once created).
 
-Areas for contribution:
+## Areas for contribution:
 
 Improving prompts for different frameworks and analysis types.
 
@@ -146,7 +159,7 @@ Ensure your local Ollama setup and the models you use are from trusted sources.
 
 Analyzing very large files or entire large projects can be resource-intensive and time-consuming due to LLM processing.
 
-License
+## License
 
 MIT License (or choose your preferred license)
 

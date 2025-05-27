@@ -3,9 +3,10 @@
 
 
 import path from 'path';
-import {findProjectFiles} from '../utility/file-traversal.js';
-import {analyzeFileWithLLM} from '../utility/llm-analyzer.js';
-import {generateReport} from '../utility/report-generator.js'
+import { findProjectFiles } from '../utility/file-traversal.js';
+import { analyzeFileWithLLM } from '../utility/llm-analyzer.js';
+import { generateReport } from '../utility/report-generator.js';
+import { lintFile } from '../utility/linter.js';
 import chalk from 'chalk';
 
 
@@ -31,29 +32,48 @@ async function main() {
     const analysisResults = [];
 
     for (const fileInfo of filesToAnalyze) {
+
+        let filaAnalysis = {
+            file: fileInfo.relativePath,
+            lintingIssues: [],
+            llmSuggestions: [],
+            errors: []
+        }
+
         console.log(chalk.cyan(`\n--- Analyzing ${fileInfo.relativePath} (${fileInfo.type}) ---`));
         try {
-            // Basic Linting (Conceptual - would need real integration)
+            // Basic Linting 
+            if (['.js', '.jsx', '.ts', '.tsx',].includes(path.extname(fileInfo.fullPath))) {
+                const lintingIssues = await lintFile(fileInfo.fullPath, fileInfo.type);
+                if (lintingIssues.length > 0) {
+                    filaAnalysis.lintingIssues = lintingIssues;
+                    //analysisResults.push({ file: fileInfo.relativePath, type: 'linting', issues: lintingIssues });
+                }
+            }
             // const lintingIssues = await runLinters(fileInfo.fullPath, fileInfo.type);
             // analysisResults.push({ file: fileInfo.relativePath, type: 'linting', issues: lintingIssues });
 
             // LLM Analysis
             const llmSuggestions = await analyzeFileWithLLM(fileInfo.fullPath, fileInfo.type, OLLAMA_MODEL_NAME);
             if (llmSuggestions) {
-                analysisResults.push({
-                    file: fileInfo.relativePath,
-                    type: 'llm-suggestion',
-                    suggestions: llmSuggestions
-                });
+                filaAnalysis.llmSuggestions = llmSuggestions;
+                // analysisResults.push({
+                //     file: fileInfo.relativePath,
+                //     type: 'llm-suggestion',
+                //     suggestions: llmSuggestions
+                // });
             }
         } catch (error) {
             console.error(chalk.red(`Error analyzing file ${fileInfo.relativePath}:`), error);
-            analysisResults.push({
-                file: fileInfo.relativePath,
-                type: 'error',
-                message: error.message
-            });
+            filaAnalysis.errors.push(error);
+
+            // analysisResults.push({
+            //     file: fileInfo.relativePath,
+            //     type: 'error',
+            //     message: error.message
+            // });
         }
+        analysisResults.push(filaAnalysis);
     }
 
     console.log(chalk.blue("\n--- Generating Report ---"));
