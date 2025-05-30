@@ -1,5 +1,7 @@
+import fs from 'fs';
+import path from 'path';
 
-export const generateReport=(analysisResults, projectPath)=> {
+export const generateReport = (analysisResults, projectPath) => {
     let report = `
 # Code Quality Analysis Report
 Project Path: ${projectPath}
@@ -16,24 +18,25 @@ Date: ${new Date().toISOString()}
     report += `**${filesAnalyzed.size} files were processed.**\n\n`;
 
     for (const result of analysisResults) {
-        report += `## File: ${result.file}\n`;
-        if (result.type === 'llm-suggestion') {
-            report += `### LLM Suggestions:\n`;
-            report += `${result.suggestions}\n`;
-        } else if (result.type === 'linting') { // If you implement this
-            report += `### Linting Issues:\n`;
-            if (result.issues && result.issues.length > 0) {
-                result.issues.forEach(issue => {
-                    report += `- Line ${issue.line}, Col ${issue.column}: ${issue.message} (${issue.ruleId})\n`;
-                });
-            } else {
-                report += "No linting issues found.\n";
-            }
-        } else if (result.type === 'error') {
-            report += `### Analysis Error:\n`;
-            report += `  ${result.message}\n`;
+        let localReport = report + `## File: ${result.file}\n`;
+        if (!!result.llmSuggestions) {
+            localReport += `### LLM Suggestions:\n`;
+            localReport += `${result.llmSuggestions}\n`;
         }
-        report += "\n---\n";
+        if (!!result.lintingIssues && result.lintingIssues.length > 0) {
+            localReport += `### Linting Issues:\n`;
+
+            result.lintingIssues.forEach(issue => {
+                localReport += `- Line ${issue.line}, Col ${issue.column}: ${issue.message} (${issue.ruleId})\n`;
+            });
+
+        }
+        if (!!result.errors && result.errors.length > 0) {
+            localReport += `### Analysis Error:\n`;
+            localReport += `  ${result.message}\n`;
+        }
+        localReport += "\n---\n";
+        const flName = result.file.split('.')[0];
+        fs.writeFileSync(path.join(projectPath, `${flName + '_report'}.md`), localReport);
     }
-    return report;
 }

@@ -1,6 +1,6 @@
 {
-  "name": "code-quality-analyzer",
-  "version": "0.1.2",
+  "name": "codesage-ai",
+  "version": "0.1.7",
   "description": "Analyzes code quality of React, Vue, and Angular projects using linters and an LLM.",
   "main": "lib/index.js",
   "type": "module",
@@ -8,23 +8,29 @@
     "analyze-code": "./bin/analyze-code.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "analyze": "analyze-code"
   },
   "keywords": [
-    "code quality",
-    "linting",
+    "codesage",
+    "codesage-ai",
+    "code-quality",
+    "llm",
+    "ai",
     "react",
     "vue",
     "angular",
-    "llm",
-    "ai"
+    "linting",
+    "analyzer",
+    "experimental"
   ],
-  "author": "Your Name",
+  "author": "Akshay Kamble <kambleakshayd@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.2",
     "eslint": "^9.27.0",
     "glob": "^10.3.10",
+    "node-cache": "^5.1.2",
     "ollama": "^0.5.0"
   },
   "engines": {

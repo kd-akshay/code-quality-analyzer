@@ -23,7 +23,7 @@ const getBaseEslintConfig = (fileType, filePath) => {
             }
         },
         //fix:true, //turn it on so it fixes while generating report
-        useEslintrc: true,// loads user's eslint file 
+        //useEslintrc: true,// loads user's eslint file 
 
     }
 
@@ -35,15 +35,36 @@ const getBaseEslintConfig = (fileType, filePath) => {
                 jsx: true
             }
         };
+        if (!baseConfig.baseConfig.settings) {
+            baseConfig.baseConfig.settings = {};
+        }
+        baseConfig.baseConfig.settings.react = {
+            version: 'detect' // Automatically detect React version from package.json
+        };
         // baseConfig.baseConfig.parserOptions.ecmaFeatures = {
         //     jsx: true,
         // }
     } else if (fileType === 'angular' && !path.extname(filePath).endsWith('.html')) {
         baseConfig.baseConfig.extends.push('plugin:@angular-eslint/recommended');
         //baseConfig.baseConfig.plugins = ['@angular-eslint/eslint-plugin'];
-        //baseConfig.baseConfig.parse = "@typescript-eslint/parser";
+
+        baseConfig.baseConfig.parser = "@typescript-eslint/parser";
+        // And parserOptions for TypeScript
+        baseConfig.baseConfig.parserOptions = {
+            ...baseConfig.baseConfig.parserOptions,
+            project: 'tsconfig.json', // Path to tsconfig.json in the analyzed project
+
+            // tsconfigRootDir: path.dirname(filePath), 
+        };
     } else if (fileType === 'vue') {
         baseConfig.baseConfig.extends.push('plugin:vue/vue3-recommended');
+        baseConfig.baseConfig.parser = 'vue-eslint-parser';
+        // And its own parserOptions
+        baseConfig.baseConfig.parserOptions = {
+            ...baseConfig.baseConfig.parserOptions,
+            parser: '@babel/eslint-parser', // Or '@typescript-eslint/parser' if using TypeScript in Vue
+
+        };
     }
 
     return baseConfig;
@@ -51,7 +72,7 @@ const getBaseEslintConfig = (fileType, filePath) => {
 
 export const lintFile = async (filePath, fileType) => {
     const ext = path.extname(filePath).toLowerCase();
-    if (!supportedExt.includes(ext) || filePath.ecmaFeatures('.d.ts')) {
+    if (!supportedExt.includes(ext) || filePath.endsWith('.d.ts')) {
         // if (fileType === 'angular' && ext === '.html'){
         // }
         return [];
