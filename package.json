@@ -11,6 +11,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "analyze": "analyze-code"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kd-akshay/code-quality-analyzer.git"
+  },
   "keywords": [
     "codesage",
     "codesage-ai",
